@@ -1,0 +1,32 @@
+IF YOU ARE USING ARDUINO IDE, YOU NEED TWO INSTANCES OF THE ARDUINO IDE OPEN FOR THIS TO WORK AND BE SURE YOU HAVEN'T FLIPPED THE RX/TX PINS (trust me, it can be a source of genuine frustration!)
+
+Explanation (Arduino Code):
+
+We include the SoftwareSerial library to create a SoftwareSerial instance for communication with the ESP32-CAM.
+
+We define rxPin and txPin to specify the pins connected to the ESP32-CAM.
+
+We initialize the SoftwareSerial instance espSerial with the rxPin and txPin.
+
+In the setup() function, we set the pin modes for rxPin and txPin, and then initialize the native serial port (Serial) and the software serial port (espSerial) with the same baud rate (9600).
+
+We define the isHandshake() function to check if the ESP32-CAM has sent the "Esp Cam Ready!" message as part of the handshake.
+
+In the loop() function, we send the "Nano Ready!" handshake message to the ESP32-CAM using espSerial.println().
+
+We then call the isHandshake() function to check if the ESP32-CAM has responded with the "Esp Cam Ready!" message. If the handshake is successful, we print "Handshake Successful," and you can add any further actions you want to perform after the handshake.
+
+
+Explanation (ESP32-CAM Code):
+
+We define ESP_RX and ESP_TX to specify the pins connected to the Arduino.
+
+In the setup() function, we initialize the native serial port (Serial) with a baud rate of 115200 and the software serial port (Serial2) with the same baud rate (9600) as the Arduino.
+
+We set the pin modes for ESP_RX and ESP_TX.
+
+In the loop() function, we wait for the "Nano Ready!" handshake message from the Arduino using Serial2.readStringUntil('\n').
+
+If the received message is "Nano Ready!", we print "Handshake Successful" and send the "Esp Cam Ready!" confirmation message
+
+NOTE: We used the trim() function to remove leading and trailing whitespaces from the received message on Serial Monitors(UART). This will ensure that there are no extra characters before the '\n'.
